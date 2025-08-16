@@ -4,10 +4,12 @@ import { Search, ShoppingBag, User, Menu, X, Heart } from 'lucide-react'
 import { useAuthStore } from '@/store/authStore'
 import { useCartStore } from '@/store/cartStore'
 import { Button } from '@/components/ui/Button'
+import { CartDrawer } from '@/components/cart/CartDrawer'
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
+  const [isCartOpen, setIsCartOpen] = useState(false)
   const { user, logout } = useAuthStore()
   const { items } = useCartStore()
   const navigate = useNavigate()
@@ -96,14 +98,17 @@ export function Header() {
             </Button>
 
             {/* Cart */}
-            <Link to="/cart" className="relative p-2">
+            <button 
+              onClick={() => setIsCartOpen(true)}
+              className="relative p-2"
+            >
               <ShoppingBag className="h-5 w-5" />
               {cartItemsCount > 0 && (
                 <span className="absolute -top-1 -right-1 bg-primary-600 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                   {cartItemsCount > 99 ? '99+' : cartItemsCount}
                 </span>
               )}
-            </Link>
+            </button>
           </div>
         </div>
 
@@ -169,6 +174,9 @@ export function Header() {
           </div>
         )}
       </div>
+
+      {/* Cart Drawer */}
+      <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </header>
   )
 }
